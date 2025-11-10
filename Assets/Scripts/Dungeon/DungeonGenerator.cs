@@ -39,7 +39,7 @@ public class DungeonGenerator : MonoBehaviour
             positions.Add(pos);
         }
 
-        bool playerSpawned = false;
+/*        bool playerSpawned = false;*/
 
         foreach (var p in positions)
         {
@@ -47,11 +47,11 @@ public class DungeonGenerator : MonoBehaviour
             GameObject room = Instantiate(roomPrefab, worldPos, Quaternion.identity);
 
             // Spawn du joueur dans la première salle
-            if (!playerSpawned && playerPrefab != null)
+/*            if (!playerSpawned && playerPrefab != null)
             {
                 Instantiate(playerPrefab, worldPos, Quaternion.identity);
                 playerSpawned = true;
-            }
+            }*/
 
             // Spawn d'ennemis aléatoires
             if (enemyPrefab != null)
