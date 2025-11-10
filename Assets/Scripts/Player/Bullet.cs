@@ -1,19 +1,25 @@
+using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10f;        // Vitesse du projectile
-    public float lifeTime = 2f;      // Durée de vie avant destruction
+    public float speed = 12f;        // Vitesse du projectile
+    public float lifeTime = 2f;      // Durï¿½e de vie avant destruction
+    public int damage = 1;           // Dï¿½gï¿½ts de la balle
+
+    private Rigidbody2D rb;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Start()
     {
-        Destroy(gameObject, lifeTime);  // Auto-destruction après quelques secondes
-    }
-
-    void Update()
-    {
-        // Fait avancer la balle tout droit
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+        // La balle part dans la direction de son "up"
+        rb.linearVelocity = transform.up * speed;
+        Destroy(gameObject, lifeTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -21,8 +27,17 @@ public class Bullet : MonoBehaviour
         // Si on touche un ennemi
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Enemy>()?.TakeDamage(1); // Inflige 1 dégât
-            Destroy(gameObject); // Détruit la balle
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+            Destroy(gameObject);
+        }
+        // Optionnel : si tu as un layer "Wall"
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Destroy(gameObject);
         }
     }
 }
