@@ -48,4 +48,17 @@ public class Enemy : MonoBehaviour
         // Ici tu peux jouer une anim / loot
         Destroy(gameObject);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            PlayerHealth ph = collision.collider.GetComponent<PlayerHealth>();
+            if (ph != null)
+            {
+                ph.TakeDamage(1);
+            }
+        }
+    }
+
 }
